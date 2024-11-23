@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import createTokenAndSaveCookie from "../jwt/generateToken.js";
 
 export const signup = async (req, res) => {
-  const { name, email, password, confirmpassword } = req.body;
+  const { name, email, password } = req.body;
   if (password != confirmpassword) {
     return res.status(400).json({
       msg: "Passwords do not match!! Check Again.",
@@ -31,7 +31,11 @@ export const signup = async (req, res) => {
       createTokenAndSaveCookie(newUser._id, res);
       res.status(201).json({
         msg: "User created successfully!!",
-        newUser,
+        newUser:{
+          _id: newUser._id,
+          name:newUser.name,
+          email:newUser.email
+        },
       });
     }
   } catch (error) {
@@ -56,7 +60,6 @@ export const login = async (req, res) => {
         _id: founduser._id,
         name:founduser.name,
         email:founduser.email
-
       }
     });
   } catch (error) {
@@ -79,3 +82,22 @@ export const logout = async (req, res)  =>  {
       });
   }
 }
+
+// to get the users
+
+export const getUserProfile = async (req, res) => {
+  try {
+    // const loggedInUser = req.User._id;
+    const allUsers = await User.find().select("-password");
+    // console.log(allUsers)
+    res.status(200).json({
+      allUsers
+    })
+  } catch (error) {
+      console.log("Error in all users:" + error)
+      res.status(500).json({
+        msg: "Error Occured in fetching users!!",
+      })
+  }
+}
+
