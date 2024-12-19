@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import createTokenAndSaveCookie from "../jwt/generateToken.js";
 
 export const signup = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, confirmpassword } = req.body;
   if (password != confirmpassword) {
     return res.status(400).json({
       msg: "Passwords do not match!! Check Again.",
@@ -16,7 +16,6 @@ export const signup = async (req, res) => {
     });
   }
 
-  // hasing the password
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {

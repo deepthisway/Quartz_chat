@@ -17,7 +17,7 @@ const Login = () => {
           };
       
           const response = await axios.post("/api/user/login", userInfo);
-          console.log(response.data);
+          // console.log(response.data);/
           if(response.data) {
             alert("User Logged in successfully");
           }
@@ -32,7 +32,7 @@ const Login = () => {
       };
     useEffect(() => {
       if (authUser) {
-        navigate("/"); // Redirect to home if user is logged in
+        navigate("/");
       }
     }, [authUser, navigate]);
       

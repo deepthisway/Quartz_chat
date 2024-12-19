@@ -1,15 +1,15 @@
 import jwt from 'jsonwebtoken';
-
+const JWT_TOKEN = "quartzchatapp"
 const createTokenAndSaveCookie = (userId, res)   =>  {
-    const token = jwt.sign({userId}, process.env.JWT_TOKEN, {
+    const token = jwt.sign({userId}, JWT_TOKEN, {
         expiresIn: '5d'
     })
     res.cookie("jwt", token, {
-        httpOnly: true, // xxs attack safety
-        secure: true,
-        sameSite: "strict" // csrf attack safety
-    })
-    ;
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Secure only for HTTPS
+        sameSite: "None",
+      });
+      
 }
 
 export default createTokenAndSaveCookie;
